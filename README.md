@@ -1,0 +1,2 @@
+# custloc
+saves customers location
