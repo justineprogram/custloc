@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Customer Records</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Customer Records</h1>
+
+    <form action="/add" method="POST" class="form">
+      <input type="text" name="name" placeholder="Customer Name" required>
+      <input type="text" name="contact" placeholder="Customer Contact" required>
+      <input type="text" name="location" placeholder="Customer Location" required>
+      <button type="submit">Add Customer</button>
+    </form>
+
+    <input type="text" id="search" placeholder="Search customers...">
+
+    <ul id="results"></ul>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById('search');
+    const resultsList = document.getElementById('results');
+
+    searchInput.addEventListener('input', async () => {
+      const query = searchInput.value;
+
+      const res = await fetch(`/search?q=${query}`);
+      const data = await res.json();
+
+      resultsList.innerHTML = '';
+      data.forEach(([id, name, contact, location]) => {
+        const li = document.createElement('li');
+        li.textContent = `${name} - ${contact} - ${location}`;
+        resultsList.appendChild(li);
+      });
+    });
+  </script>
+</body>
+</html>
